@@ -6,6 +6,10 @@
     "module": "ESNext",
     "target": "ES2022",
     "skipLibCheck": true,
-    "types": ["@cloudflare/workers-types"]
+    "types": ["@cloudflare/workers-types"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["app/*"]
+    }
   }
 }
