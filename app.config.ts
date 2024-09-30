@@ -27,7 +27,7 @@ const tanstackApp = defineConfig({
 const routers = tanstackApp.config.routers.map((r) => {
   return {
     ...r,
-    middleware: r.target === 'server' ? './middleware.tsx' : undefined,
+    middleware: r.target === 'server' ? 'middlewares/cloudflare.tsx' : undefined,
   }
 })
 
