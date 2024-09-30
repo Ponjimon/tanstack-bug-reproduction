@@ -9,6 +9,43 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      - name: Checkout code
+        uses: actions/checkout@main
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.1.29
+
+      - name: Bun Postinstall
+        run: 'exec $($SHELL)'
+
+      - name: Restore cached deps
+        id: cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            .vinxi
+          key: ${{ runner.os }}-${{ hashFiles('**/bun.lockb') }}
+
+      - name: Cache save deps
+        id: cache-save
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            node_modules
+            .vinxi
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+
+          
+      - name: Install Dependencies
+        if: steps.cache-restore.outputs.cache-hit != 'true'
+        run: bun install --frozen-lockfile
+          
+      - name: Build
+        run: bun run build
+          
       - name: Deploy
         id: deploy
         uses: cloudflare/wrangler-action@v3
