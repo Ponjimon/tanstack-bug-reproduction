@@ -1,30 +1,30 @@
-import { createRootRoute } from "@tanstack/react-router";
-import { Outlet, ScrollRestoration } from "@tanstack/react-router";
-import { Body, Head, Html, Meta, Scripts } from "@tanstack/start";
-import * as React from "react";
+import { createRootRoute } from '@tanstack/react-router'
+import { Outlet, ScrollRestoration } from '@tanstack/react-router'
+import { Body, Head, Html, Meta, Scripts } from '@tanstack/start'
+import type * as React from 'react'
 
 export const Route = createRootRoute({
   meta: () => [
     {
-      charSet: "utf-8",
+      charSet: 'utf-8',
     },
     {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1",
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1',
     },
     {
-      title: "TanStack Start on Cloudflare Workers",
+      title: 'TanStack Start on Cloudflare Workers',
     },
   ],
   component: RootComponent,
-});
+})
 
 function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
     </RootDocument>
-  );
+  )
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
@@ -39,5 +39,5 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <Scripts />
       </Body>
     </Html>
-  );
+  )
 }
