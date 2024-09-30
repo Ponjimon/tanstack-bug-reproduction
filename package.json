@@ -10,7 +10,8 @@
     "start": "vinxi start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "cf-typegen": "wrangler types",
-    "lint": "biome check ."
+    "lint": "biome check .",
+    "wrangler": "wrangler"
   },
   "keywords": [],
   "author": "",
