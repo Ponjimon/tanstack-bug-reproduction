@@ -1,21 +1,22 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/start'
-import { getEvent } from 'vinxi/http'
+
+import { getEnv } from '~/utils/get-env'
 
 const incrementCount = createServerFn('POST', async () => {
-  const event = getEvent()
-  const response = await event.context.cloudflare.env.tanstack_start_workers.get('count')
+  const { tanstack_start_workers } = getEnv()
+  const response = await tanstack_start_workers.get('count')
   if (!response) {
-    await event.context.cloudflare.env.tanstack_start_workers.put('count', JSON.stringify({ count: 1 }))
+    await tanstack_start_workers.put('count', JSON.stringify({ count: 1 }))
   } else {
     const previousCount = JSON.parse(response).count as number
-    await event.context.cloudflare.env.tanstack_start_workers.put('count', JSON.stringify({ count: previousCount + 1 }))
+    await tanstack_start_workers.put('count', JSON.stringify({ count: previousCount + 1 }))
   }
 })
 
 const getCount = createServerFn('GET', async () => {
-  const event = getEvent()
-  const response = await event.context.cloudflare.env.tanstack_start_workers.get('count')
+  const { tanstack_start_workers } = getEnv()
+  const response = await tanstack_start_workers.get('count')
   if (!response) {
     return { count: 0 }
   }
