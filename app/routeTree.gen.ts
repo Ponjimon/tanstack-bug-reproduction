@@ -11,12 +11,24 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
+import { Route as ReportsIndexImport } from './routes/reports.index'
+import { Route as ReportsReportIdImport } from './routes/reports.$reportId'
+import { Route as ReportsReportIdEditImport } from './routes/reports_.$reportId.edit'
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const ReportsIndexRoute = ReportsIndexImport.update({
+  path: '/reports/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ReportsReportIdRoute = ReportsReportIdImport.update({
+  path: '/reports/$reportId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ReportsReportIdEditRoute = ReportsReportIdEditImport.update({
+  path: '/reports/$reportId/edit',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -24,11 +36,25 @@ const IndexRoute = IndexImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
+    '/reports/$reportId': {
+      id: '/reports/$reportId'
+      path: '/reports/$reportId'
+      fullPath: '/reports/$reportId'
+      preLoaderRoute: typeof ReportsReportIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/reports/': {
+      id: '/reports/'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/reports/$reportId/edit': {
+      id: '/reports/$reportId/edit'
+      path: '/reports/$reportId/edit'
+      fullPath: '/reports/$reportId/edit'
+      preLoaderRoute: typeof ReportsReportIdEditImport
       parentRoute: typeof rootRoute
     }
   }
@@ -37,33 +63,47 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/reports/$reportId': typeof ReportsReportIdRoute
+  '/reports': typeof ReportsIndexRoute
+  '/reports/$reportId/edit': typeof ReportsReportIdEditRoute
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/reports/$reportId': typeof ReportsReportIdRoute
+  '/reports': typeof ReportsIndexRoute
+  '/reports/$reportId/edit': typeof ReportsReportIdEditRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
-  '/': typeof IndexRoute
+  '/reports/$reportId': typeof ReportsReportIdRoute
+  '/reports/': typeof ReportsIndexRoute
+  '/reports/$reportId/edit': typeof ReportsReportIdEditRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/reports/$reportId' | '/reports' | '/reports/$reportId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/reports/$reportId' | '/reports' | '/reports/$reportId/edit'
+  id:
+    | '__root__'
+    | '/reports/$reportId'
+    | '/reports/'
+    | '/reports/$reportId/edit'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  ReportsReportIdRoute: typeof ReportsReportIdRoute
+  ReportsIndexRoute: typeof ReportsIndexRoute
+  ReportsReportIdEditRoute: typeof ReportsReportIdEditRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  ReportsReportIdRoute: ReportsReportIdRoute,
+  ReportsIndexRoute: ReportsIndexRoute,
+  ReportsReportIdEditRoute: ReportsReportIdEditRoute,
 }
 
 export const routeTree = rootRoute
@@ -78,11 +118,19 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/reports/$reportId",
+        "/reports/",
+        "/reports/$reportId/edit"
       ]
     },
-    "/": {
-      "filePath": "index.tsx"
+    "/reports/$reportId": {
+      "filePath": "reports.$reportId.tsx"
+    },
+    "/reports/": {
+      "filePath": "reports.index.tsx"
+    },
+    "/reports/$reportId/edit": {
+      "filePath": "reports_.$reportId.edit.tsx"
     }
   }
 }
